@@ -2,7 +2,56 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@*<div class="text-center">
+    <h1 class="display-4">SaanaPay Leave/Requistion Management</h1>
+    
+</div>*@
+<div class="row row-cols-1 row-cols-md-2 g-4" >
+    <div class="col btn btn-primary">
+        
+            <div class="card btn btn-info">
+               
+                <div class="card-body">
+                <a asp-controller="RequisitionForms" asp-action="Create">
+                    <h1 class="card-title">CREATE</h1>
+                </a>
+                   
+                  
+                </div>
+            </div>
+        
+    </div>
+    <div class="col  btn btn-primary">
+
+        <div class="card btn btn-danger">
+              
+                <div class="card-body">
+                  <a asp-controller="RequisitionForms" asp-action="Index">
+                   <h1 class="card-title text-dark">DRAFT</h1>
+                </a>
+                </div>
+            </div>
+        
+    </div>
+    <div class="col  btn btn-primary">
+
+        <div class="card btn btn-danger">
+                
+                <div class="card-body">
+                <h1 class="card-title text-dark">ARCHIVE</h1>
+                    
+                </div>
+            </div>
+        
+    </div>
+    <div class="col  btn btn-primary">
+        <div class="card btn btn-secondary">
+               
+                <div class="card-body">
+                <h1 class="card-title text-dark">STAGE NOTIFICATION</h1>
+                  
+                </div>
+            </div>
+    </div>
 </div>
+

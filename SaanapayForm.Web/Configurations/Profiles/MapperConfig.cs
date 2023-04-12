@@ -9,6 +9,7 @@ namespace SaanapayForm.Web.Configurations.Profiles
         public MapperConfig()
         {
             CreateMap<LeaveType, LeaveTypeVM>().ReverseMap();
+            CreateMap<RequisitionForm, RequisitionFormVM>().ReverseMap();
         }
     }
 }
