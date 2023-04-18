@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,8 @@ using SaanapayForm.Web.Models.ViewModel;
 
 namespace SaanapayForm.Web.Controllers
 {
+    [Authorize(Roles = "Administrator")]
+   // [Authorize(Roles = "Administrator, User")]
     public class LeaveTypesController : Controller
     {
         
