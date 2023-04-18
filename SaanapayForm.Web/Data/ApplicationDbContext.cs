@@ -17,6 +17,7 @@ namespace SaanapayForm.Web.Data
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new RoleSeedConfiguration());
             builder.ApplyConfiguration(new UserSeedConfiguration());
+            builder.ApplyConfiguration(new UserRoleSeedConfiguration());
         }
 
         public DbSet<LeaveType> LeaveTypes { get; set; }

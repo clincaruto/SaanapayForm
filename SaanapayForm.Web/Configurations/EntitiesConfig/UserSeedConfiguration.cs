@@ -9,11 +9,16 @@ namespace SaanapayForm.Web.Configurations.EntitiesConfig
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
+            var hasher = new PasswordHasher<Employee>();
             builder.HasData(
                 new Employee
                 {
-                    Id = "11bdd8e1-0747-407b-8850-017a5457c337",
-                    Email = ""
+                    Id = "a565265f-3bc4-495d-95c7-0d8bfe2564d3",
+                    Email = "admin3@test.com",
+                    NormalizedEmail = "ADMIN3@TEST.COM",
+                    Firstname = "System",
+                    Lastname = "Admin",
+                    PasswordHash = hasher.HashPassword(null, "Admin@123")
                 }
 
               );
