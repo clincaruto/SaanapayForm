@@ -10,8 +10,8 @@ namespace SaanapayForm.Web.Models.Domain
         public string? TaxId { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime DateJoined { get; set; }
-        public UserRoleEnum UserRole { get; set; }
-        public string strUserRole { get; set; }
+       // public UserRoleEnum UserRole { get; set; }
+       // public string strUserRole { get; set; }
 
     }
 }
