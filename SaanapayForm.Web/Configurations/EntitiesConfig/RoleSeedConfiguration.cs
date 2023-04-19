@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SaanapayForm.Web.Constants;
 
 namespace SaanapayForm.Web.Configurations.EntitiesConfig
 {
@@ -12,14 +13,16 @@ namespace SaanapayForm.Web.Configurations.EntitiesConfig
                 new IdentityRole
                 {
                     Id = "21edd8e1-0747-407b-2150-017a5457c337",
-                    Name = "Administrator",
-                    NormalizedName = "ADMINISTRATOR"
+                    Name = Roles.Administrator,
+                    NormalizedName = Roles.Administrator.ToUpper()
                 },
                  new IdentityRole
                  {
                      Id = "21ebb8e1-0747-407cS-2150-017a5457c337",
-                     Name = "User",
-                     NormalizedName = "USER"
+                     Name = Roles.User,
+                     NormalizedName= Roles.User.ToUpper()
+                     //Name = "User",
+                     //NormalizedName = "USER"
                  }
 
               );

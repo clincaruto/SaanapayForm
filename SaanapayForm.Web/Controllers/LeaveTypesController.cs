@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using SaanapayForm.Web.Constants;
 using SaanapayForm.Web.Data;
 using SaanapayForm.Web.GenericRepository.IRepository;
 using SaanapayForm.Web.Models.Domain;
@@ -14,7 +15,7 @@ using SaanapayForm.Web.Models.ViewModel;
 
 namespace SaanapayForm.Web.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = Roles.Administrator)]
    // [Authorize(Roles = "Administrator, User")]
     public class LeaveTypesController : Controller
     {
