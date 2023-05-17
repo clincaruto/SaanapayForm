@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+  @*  <link rel="stylesheet" href="~/css/style.css" asp-append-version="true"/>*@
     <link rel="stylesheet" href="~/SaanapayForm.Web.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -53,7 +54,9 @@
             </div>
         </nav>
     </header>
+   @* @Html.Partial("_SideBarViewUser")*@
     <div class="container">
+      @*  @Html.Partial("_SideBarViewUser")*@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success"> <i class="fa-solid fa-plus"> </i>Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -51,11 +51,42 @@
             </td>
             
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                 <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i>Edit </a>
+                 <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i>Details </a>
+                  @* <a class="btn btn-success" asp-action="SendManager" asp-route-id="@item.Id"><i class="fa-light fa-paper-plane-top"></i>Send </a>*@
+                    <button data-id="@item.Id" class="btn btn-success sendBtn" type="button"> <i class="fa-light fa-paper-plane-top"></i> Send </button>
+               
                 @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
             </td>
         </tr>
 }
     </tbody>
 </table>
+<form id="sendForm" asp-action="SendManager">
+    <input type="hidden" id="sendId" name="Id"/>
+</form>
+
+@section Scripts{
+    <script>
+        $(function(){
+            $('.table').DataTable();
+
+            $('.sendBtn').click(function (e) {
+                swal({
+                    title: "Are you sure?",
+                    text: "Are you sure you want to send this record to your Supervisor?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                }).then((confirm) => {
+                    if (confirm) {
+                        var btn = $(this);
+                        var id = btn.data("id");
+                        $('#sendId').val(id);
+                        $('#sendFrom').submit();
+                    }
+                });
+            });
+        });
+    </script>
+}
