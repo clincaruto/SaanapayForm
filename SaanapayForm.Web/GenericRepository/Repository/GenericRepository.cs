@@ -20,7 +20,13 @@ namespace SaanapayForm.Web.GenericRepository.Repository
             return entity;
         }
 
-        public async Task DeleteAsync(int id)
+		public async Task AddRangeAsync(List<T> entities)
+		{
+			await context.AddRangeAsync(entities);
+            await context.SaveChangesAsync();
+		}
+
+		public async Task DeleteAsync(int id)
         {
             var entity = await GetAsync(id);
             context.Set<T>().Remove(entity);
@@ -33,9 +39,13 @@ namespace SaanapayForm.Web.GenericRepository.Repository
             return entity != null;
         }
 
-        public async Task<List<T>> GetAllAsync()
+        public async Task<List<T>> GetAllAsync(int pageNumber = 1, int pageSize = 10)
         {
-            return await context.Set<T>().ToListAsync();
+            var leave = context.Set<T>().AsQueryable();
+
+            // Pagination
+            var skipResults = (pageNumber - 1) * pageSize;
+            return await leave.Skip(skipResults).Take(pageSize).ToListAsync();
         }
 
         public async Task<T> GetAsync(int? id)

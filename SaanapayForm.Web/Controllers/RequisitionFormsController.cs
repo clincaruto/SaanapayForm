@@ -30,10 +30,10 @@ namespace SaanapayForm.Web.Controllers
 
         // GET: RequisitionForms
         //[ActionName("Draft")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             // 
-            var requisition = await requisitionRepository.GetAllAsync();
+            var requisition = await requisitionRepository.GetAllAsync(pageNumber, pageSize);
 
             // covert domain into viewmodel
             var requisitionVM = mapper.Map<List<RequisitionFormVM>>(requisition);
