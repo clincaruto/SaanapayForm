@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SaanapayForm.Web.Data;
 
@@ -11,13 +12,14 @@ using SaanapayForm.Web.Data;
 namespace SaanapayForm.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231017175805_updatedrequestcomments")]
+    partial class updatedrequestcomments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.23")
+                .HasAnnotation("ProductVersion", "6.0.21")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -52,14 +54,14 @@ namespace SaanapayForm.Web.Data.Migrations
                         new
                         {
                             Id = "21edd8e1-0747-407b-2150-017a5457c337",
-                            ConcurrencyStamp = "cdd8c098-87a8-40e1-9ca7-e88a7360c015",
+                            ConcurrencyStamp = "10145d54-2a93-4674-823b-c4823d22ecef",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "21ebb8e1-0747-407cS-2150-017a5457c337",
-                            ConcurrencyStamp = "7fff9edf-54ea-47df-a1dc-a7a8ca457ba5",
+                            ConcurrencyStamp = "20fbb931-2194-4c39-bf9e-846017c5ae2f",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -271,7 +273,7 @@ namespace SaanapayForm.Web.Data.Migrations
                         {
                             Id = "a565265f-3bc4-495d-95c7-0d8bfe2564d3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1a771cba-d743-4aec-8a08-096e9e2ccb70",
+                            ConcurrencyStamp = "ebbde433-9ee9-4edc-9cc5-b9827162c2b1",
                             DateJoined = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin3@test.com",
@@ -281,9 +283,9 @@ namespace SaanapayForm.Web.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN3@TEST.COM",
                             NormalizedUserName = "ADMIN3@TEST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEL66ddSxN4xvBQaFDyxTbHob12oT39uFdvRMeAkv0j8a18+KhDE2RTeZRRg7zchvmQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENU+R4oJqfKvtL0JEvlLvqOhsQRtfb475XG0NUJJwaHrEkzTbSKQTsHtQIKBX+n2Zg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "62e1966a-b692-4359-af7b-7218fdce2ce9",
+                            SecurityStamp = "73683378-4085-427d-8cfd-7b3133e9557d",
                             TwoFactorEnabled = false,
                             UserName = "admin3@test.com"
                         },
@@ -291,7 +293,7 @@ namespace SaanapayForm.Web.Data.Migrations
                         {
                             Id = "4e9b4d5d-4196-4a1c-9324-0b487b213ce9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1a86ed30-24f4-490a-bc10-7eb8ee96613d",
+                            ConcurrencyStamp = "27777cbc-73a6-4859-9393-97620b7cfe01",
                             DateJoined = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "user@test.com",
@@ -301,9 +303,9 @@ namespace SaanapayForm.Web.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@TEST.COM",
                             NormalizedUserName = "USER@TEST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEB2STGWvH1KxbKZRFRn3TWwI8GbOYNWku3AIMXqY2mXf0NKXhtWjGK8UOw2f8CLKcw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEI0YLBa9te9tSAqFxagRJlWBnVpL605U57FHeKFB1BgTTwc/rD19YzHnkMmZFwHfhw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "44034a9f-8532-48b0-863c-760b3a08e803",
+                            SecurityStamp = "759af10b-7005-44cd-8ca9-28d526073aa8",
                             TwoFactorEnabled = false,
                             UserName = "user@test.com"
                         });

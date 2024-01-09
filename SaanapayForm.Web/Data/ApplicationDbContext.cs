@@ -22,7 +22,9 @@ namespace SaanapayForm.Web.Data
 
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<LeaveAllocation> LeaveAllocations { get; set; }
+        public DbSet<LeaveRequest> LeaveRequests { get; set; }
         public DbSet<RequisitionForm> RequisitionForm { get; set; }
+
 
 
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SaanapayForm.Web.Data;
 using SaanapayForm.Web.GenericRepository.IRepository;
+using SaanapayForm.Web.Models.Domain;
 
 namespace SaanapayForm.Web.GenericRepository.Repository
 {
@@ -54,8 +55,11 @@ namespace SaanapayForm.Web.GenericRepository.Repository
             {
                 return null;
             }
+
             return await context.Set<T>().FindAsync(id);
+            //return await context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
         }
+      
 
         public async Task UpdateAsync(T entity)
         {

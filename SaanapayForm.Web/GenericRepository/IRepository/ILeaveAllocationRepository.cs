@@ -7,7 +7,8 @@ namespace SaanapayForm.Web.GenericRepository.IRepository
     {
        Task LeaveAllocation(int leaveTypeId);
         Task<bool> AllocationExists(string employeeId, int leaveTypeId, int period);
-        Task<EmployeeAllocationVM> GetEmployeeAllocations(string employeeId);
+        Task<EmployeeAllocationVM> GetEmployeeAllocations(string employeeId); 
+        Task<LeaveAllocation?> GetEmployeeAllocation(string employeeId, int leaveTypeId);
 		Task<LeaveAllocationEditVM> GetEmployeeAllocation(int Id);
         Task<bool> UpdateEmployeeAllocation(LeaveAllocationEditVM model);
 	}
