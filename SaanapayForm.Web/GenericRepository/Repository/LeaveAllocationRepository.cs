@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SaanapayForm.Web.Constants;
@@ -15,14 +16,16 @@ namespace SaanapayForm.Web.GenericRepository.Repository
 		private readonly UserManager<Employee> userManager;
 		private readonly ILeaveTypeRepository leaveTypeRepository;
 		private readonly IMapper mapper;
+        private readonly AutoMapper.IConfigurationProvider configurationProvider;
 
-		public LeaveAllocationRepository(ApplicationDbContext context, UserManager<Employee> userManager, ILeaveTypeRepository leaveTypeRepository, IMapper mapper) : base(context)
+        public LeaveAllocationRepository(ApplicationDbContext context, UserManager<Employee> userManager, ILeaveTypeRepository leaveTypeRepository, IMapper mapper, AutoMapper.IConfigurationProvider configurationProvider) : base(context)
         {
 			this.context = context;
 			this.userManager = userManager;
 			this.leaveTypeRepository = leaveTypeRepository;
 			this.mapper = mapper;
-		}
+            this.configurationProvider = configurationProvider;
+        }
 
 		public async Task<bool> AllocationExists(string employeeId, int leaveTypeId, int period)
 		{
@@ -34,13 +37,19 @@ namespace SaanapayForm.Web.GenericRepository.Repository
 		{
 			var allocations = await context.LeaveAllocations
 				.Include(q => q.LeaveType)
-				.Where(q => q.EmployeeId== employeeId).ToListAsync();
+				.Where(q => q.EmployeeId == employeeId)
+				.ProjectTo<LeaveAllocationVM>(configurationProvider) // optional, a snippet to take properties from entity and map, instead of writing sql queries and mapping
+				.ToListAsync();
+				
+			    
+
 			var employee = await userManager.FindByIdAsync(employeeId);
 
 			var employeeAllocationModel = mapper.Map<EmployeeAllocationVM>(employee);
-			employeeAllocationModel.LeaveAllocations = mapper.Map<List<LeaveAllocationVM>>(allocations);
+			employeeAllocationModel.LeaveAllocations = allocations;
+            //employeeAllocationModel.LeaveAllocations = mapper.Map<List<LeaveAllocationVM>>(allocations);
 
-			return employeeAllocationModel;
+            return employeeAllocationModel;
 
 		}
 

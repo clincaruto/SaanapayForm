@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SaanapayForm.Web.Data;
@@ -15,14 +16,16 @@ namespace SaanapayForm.Web.GenericRepository.Repository
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly UserManager<Employee> userManager;
         private readonly ILeaveAllocationRepository leaveAllocationRepository;
+        private readonly AutoMapper.IConfigurationProvider configurationProvider;
 
-        public LeaveRequestRepository(ApplicationDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, UserManager<Employee> userManager, ILeaveAllocationRepository leaveAllocationRepository) : base(context)
+        public LeaveRequestRepository(ApplicationDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, UserManager<Employee> userManager, ILeaveAllocationRepository leaveAllocationRepository, AutoMapper.IConfigurationProvider configurationProvider) : base(context)
         {
             this.context = context;
             this.mapper = mapper;
             this.httpContextAccessor = httpContextAccessor;
             this.userManager = userManager;
             this.leaveAllocationRepository = leaveAllocationRepository;
+            this.configurationProvider = configurationProvider;
         }
 
         public async Task<LeaveRequest> GetAsyncC(int? requestId)
@@ -99,9 +102,16 @@ namespace SaanapayForm.Web.GenericRepository.Repository
             return model;
         }
 
-        public async Task<List<LeaveRequest>> GetAllAsyncById(string employeeId)
+        //public async Task<List<LeaveRequest>> GetAllAsyncById(string employeeId)
+        //{
+        //    return await context.LeaveRequests.Where(q => q.RequestingEmployeeId == employeeId).ToListAsync();
+        //}
+
+        public async Task<List<LeaveRequestVM>> GetAllAsyncById(string employeeId)
         {
-            return await context.LeaveRequests.Where(q => q.RequestingEmployeeId == employeeId).ToListAsync();
+            return await context.LeaveRequests.Where(q => q.RequestingEmployeeId == employeeId)
+                .ProjectTo<LeaveRequestVM>(configurationProvider)
+                .ToListAsync();
         }
 
         public async Task<LeaveRequestVM?> GetLeaveRequestAsync(int? id)
@@ -123,7 +133,10 @@ namespace SaanapayForm.Web.GenericRepository.Repository
         {
             var user = await userManager.GetUserAsync(httpContextAccessor?.HttpContext?.User);
             var allocations = (await leaveAllocationRepository.GetEmployeeAllocations(user.Id)).LeaveAllocations;
-            var requests = mapper.Map<List<LeaveRequestVM>>(await GetAllAsyncById(user.Id));
+            //var requests = mapper.Map<List<LeaveRequestVM>>(await GetAllAsyncById(user.Id));
+
+            //----- no need to automap because we already using ProjectTO
+            var requests = await GetAllAsyncById(user.Id); 
 
             var model = new EmployeeLeaveRequestVM(allocations, requests);
 

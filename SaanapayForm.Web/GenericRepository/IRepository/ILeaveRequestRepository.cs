@@ -8,7 +8,7 @@ namespace SaanapayForm.Web.GenericRepository.IRepository
         Task<bool> CreateLeaveRequest(LeaveRequestCreateVM model);
         Task<EmployeeLeaveRequestVM> GetMyLeaveDetails();
         Task<LeaveRequestVM?> GetLeaveRequestAsync(int? id);
-        Task<List<LeaveRequest>> GetAllAsyncById(string employeeId);
+        Task<List<LeaveRequestVM>> GetAllAsyncById(string employeeId);
         Task ChangeApprovalStatus(int leaveRequestId, bool approved);
         Task CancelLeaveRequest(int leaveRequestId);
         Task<AdminLeaveRequestVM> GetAdminLeaveRequestList();
