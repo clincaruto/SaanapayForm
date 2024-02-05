@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using SaanapayForm.Web.Constants;
 using SaanapayForm.Web.Data;
 using SaanapayForm.Web.GenericRepository.IRepository;
 using SaanapayForm.Web.Models.Domain;
 using SaanapayForm.Web.Models.ViewModel;
+using SaanapayForm.Web.Services;
 
 namespace SaanapayForm.Web.GenericRepository.Repository
 {
@@ -17,14 +19,16 @@ namespace SaanapayForm.Web.GenericRepository.Repository
 		private readonly ILeaveTypeRepository leaveTypeRepository;
 		private readonly IMapper mapper;
         private readonly AutoMapper.IConfigurationProvider configurationProvider;
+        private readonly IEmailSender emailSender;
 
-        public LeaveAllocationRepository(ApplicationDbContext context, UserManager<Employee> userManager, ILeaveTypeRepository leaveTypeRepository, IMapper mapper, AutoMapper.IConfigurationProvider configurationProvider) : base(context)
+        public LeaveAllocationRepository(ApplicationDbContext context, UserManager<Employee> userManager, ILeaveTypeRepository leaveTypeRepository, IMapper mapper, AutoMapper.IConfigurationProvider configurationProvider, IEmailSender emailSender) : base(context)
         {
 			this.context = context;
 			this.userManager = userManager;
 			this.leaveTypeRepository = leaveTypeRepository;
 			this.mapper = mapper;
             this.configurationProvider = configurationProvider;
+            this.emailSender = emailSender;
         }
 
 		public async Task<bool> AllocationExists(string employeeId, int leaveTypeId, int period)
@@ -105,6 +109,8 @@ namespace SaanapayForm.Web.GenericRepository.Repository
 			var leavetype = await leaveTypeRepository.GetAsync(leaveTypeId);
 			var allocations = new List<LeaveAllocation>();
 
+			var employeeWithNewAllocations = new List<Employee>();
+
 			foreach (var employee in employees)
 			{
 				if (await AllocationExists(employee.Id, leaveTypeId, period))
@@ -117,10 +123,16 @@ namespace SaanapayForm.Web.GenericRepository.Repository
 					Period = period,
 					NumberOfDays = leavetype.DefaultDays
 				});
-				
+				employeeWithNewAllocations.Add(employee);
 
 			}
 			await AddRangeAsync(allocations);
+
+			foreach (var employee in employeeWithNewAllocations)
+			{
+                await emailSender.SendEmailAsync(employee.Email, $"Leave Allocation Posted for {period}", $"Your {leavetype.Name} " +
+                  $"has been posted for the period of {period}. You have been given {leavetype.DefaultDays}.");
+            }
 
 
 		}

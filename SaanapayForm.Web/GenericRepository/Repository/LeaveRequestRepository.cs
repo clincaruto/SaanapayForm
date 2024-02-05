@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using SaanapayForm.Web.Data;
 using SaanapayForm.Web.GenericRepository.IRepository;
@@ -17,8 +18,9 @@ namespace SaanapayForm.Web.GenericRepository.Repository
         private readonly UserManager<Employee> userManager;
         private readonly ILeaveAllocationRepository leaveAllocationRepository;
         private readonly AutoMapper.IConfigurationProvider configurationProvider;
+        private readonly IEmailSender emailSender;
 
-        public LeaveRequestRepository(ApplicationDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, UserManager<Employee> userManager, ILeaveAllocationRepository leaveAllocationRepository, AutoMapper.IConfigurationProvider configurationProvider) : base(context)
+        public LeaveRequestRepository(ApplicationDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, UserManager<Employee> userManager, ILeaveAllocationRepository leaveAllocationRepository, AutoMapper.IConfigurationProvider configurationProvider, IEmailSender emailSender) : base(context)
         {
             this.context = context;
             this.mapper = mapper;
@@ -26,6 +28,7 @@ namespace SaanapayForm.Web.GenericRepository.Repository
             this.userManager = userManager;
             this.leaveAllocationRepository = leaveAllocationRepository;
             this.configurationProvider = configurationProvider;
+            this.emailSender = emailSender;
         }
 
         public async Task<LeaveRequest> GetAsyncC(int? requestId)
@@ -54,6 +57,21 @@ namespace SaanapayForm.Web.GenericRepository.Repository
             }
 
             await UpdateAsync(leaveRequest);
+
+            var user = await userManager.FindByIdAsync(leaveRequest.RequestingEmployeeId);
+            var approvalStatus = approved ? "Approved" : "Declined";
+
+            //if (approvalStatus == approved)
+            //{
+
+            //}
+            //else
+            //{
+
+            //}
+
+            await emailSender.SendEmailAsync(user.Email, $"Leave Request {approvalStatus}", $"Your leave request from " +
+               $"{leaveRequest.StartDate} to {leaveRequest.EndDate} has been {approvalStatus}");
         }
 
         public async Task<bool> CreateLeaveRequest(LeaveRequestCreateVM model)
@@ -78,6 +96,9 @@ namespace SaanapayForm.Web.GenericRepository.Repository
             leaveRequest.RequestingEmployeeId = user.Id;
 
             await AddAsync(leaveRequest);
+
+            await emailSender.SendEmailAsync(user.Email, "Leave Request Submitted Successfully", $"Your leave request from " + 
+                $"{leaveRequest.StartDate} to {leaveRequest.EndDate} has been submitted for approval");
 
             return true;
         }
@@ -148,6 +169,11 @@ namespace SaanapayForm.Web.GenericRepository.Repository
             var leaveRequest = await GetAsync(leaveRequestId);
             leaveRequest.Cancelled = true;
             await UpdateAsync(leaveRequest);
+
+            var user = await userManager.FindByIdAsync(leaveRequest.RequestingEmployeeId);
+
+            await emailSender.SendEmailAsync(user.Email, "Leave Request Cancellled", $"Your leave request from " +
+              $"{leaveRequest.StartDate} to {leaveRequest.EndDate} has been Cancelled Successfully.");
         }
     }
 }
