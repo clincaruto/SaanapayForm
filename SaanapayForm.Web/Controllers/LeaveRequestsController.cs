@@ -21,12 +21,14 @@ namespace SaanapayForm.Web.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IMapper mapper;
         private readonly ILeaveRequestRepository leaveRequestRepository;
+        private readonly ILogger<LeaveRequestsController> logger;
 
-        public LeaveRequestsController(ApplicationDbContext context, IMapper mapper, ILeaveRequestRepository leaveRequestRepository)
+        public LeaveRequestsController(ApplicationDbContext context, IMapper mapper, ILeaveRequestRepository leaveRequestRepository, ILogger<LeaveRequestsController> logger)
         {
             _context = context;
             this.mapper = mapper;
             this.leaveRequestRepository = leaveRequestRepository;
+            this.logger = logger;
         }
 
         // GET: LeaveRequests
@@ -65,7 +67,7 @@ namespace SaanapayForm.Web.Controllers
             }
             catch (Exception ex)
             {
-
+                logger.LogError(ex, "Error Approving Request");
                 throw;
             }
             return RedirectToAction(nameof(Index));
@@ -105,7 +107,7 @@ namespace SaanapayForm.Web.Controllers
             }
             catch (Exception ex)
             {
-
+                logger.LogError(ex, "Error Creating leave  Request");
                 ModelState.AddModelError(string.Empty, "An Error Has Occured. Please Try Again Later");
             }
            
@@ -220,7 +222,7 @@ namespace SaanapayForm.Web.Controllers
             }
             catch (Exception ex)
             {
-
+                logger.LogError(ex, "Error Canceling Leave Request");
                 throw;
             }
             return RedirectToAction(nameof(MyLeave));

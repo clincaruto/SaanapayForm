@@ -35,6 +35,7 @@ namespace SaanapayForm.Web.Controllers
         // GET: LeaveTypes
         public async Task<IActionResult> Index()
         {
+            //throw new Exception("Testing the logging");
             // Fetch data from the database - domain leavetype
             var leaveTypes = await leaveTypeRepository.GetAllAsync();
 
@@ -113,11 +114,23 @@ namespace SaanapayForm.Web.Controllers
                 return NotFound();
             }
 
+            // this was added to fix the issue where datecreated is removed and only datemodified is done
+            var leaveType = await leaveTypeRepository.GetAsync(id);
+            if (leaveType == null)
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var leaveType = mapper.Map<LeaveType>(leaveTypeVM);
+                    //var leaveType = mapper.Map<LeaveType>(leaveTypeVM);
+                    //await leaveTypeRepository.UpdateAsync(leaveType);
+
+                    // this is to fix the issue where datecreated is removed and only datemodifed is done
+                   
+                    mapper.Map(leaveTypeVM, leaveType);
                     await leaveTypeRepository.UpdateAsync(leaveType);
                 }
                 catch (DbUpdateConcurrencyException)
